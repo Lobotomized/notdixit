@@ -93,7 +93,7 @@ const newGame = function (properties) {
             if (game) {
                 game.disconnect(socketId)
                 const nonBots = game.players.filter((pl) => {
-                    return pl.socketId.substring(0, 10) == 'thisisabot'
+                    return pl.socketId.substring(0, 10) != 'thisisabot'
                 })
                 if (!nonBots.length) {
                     this.games.splice(this.games.indexOf(game), 1)
