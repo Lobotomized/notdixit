@@ -8,9 +8,30 @@
 
     socket.on('returnState', (state) => {
         //Draw the game
-        console.log(state)
     }) // Return State
 
+    function test() {
+        console.log('here?')
+        socket.emit('move', {
+            type:'story',
+            story: 'tralala',
+            cardId:"test"
+        })
+    }
+
+    function vote(){
+        socket.emit('move', {
+            type:'vote',
+            cardId:"test"
+        })
+    }
+
+    function pickCard(){
+        socket.emit('move', {
+            type:'pickCard',
+            cardId:"test"
+        })
+    }
 
 </script>
 
@@ -26,6 +47,13 @@
 </head>
 
 <body>
+    <button onClick="test()">
+        Tell story
+    </button>
+
+    <button onClick="vote()">Vote</button>
+
+    <button onClick="pickCard()">PicCard</button>
 </body>
 
 </html>

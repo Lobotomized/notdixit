@@ -1,4 +1,5 @@
 const express = require('express');
+const { drawRandomCardFromDeck, checkIfAllVoted, checkIfStoryTeller, nextStoryTeller, countPoints, cleanVotesAndActiveStory, checkForWinner, moveCardFromHandToBoard, checkIfPlayerPickedACard, allPlayersPickedACard } = require('./helperMethods');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
@@ -7,34 +8,102 @@ const delayStartBlocker = require('./blockers').delayStartBlocker
 
 
 app.use('/static', express.static('public'))
-
+const winningPoints = 15;
 newG({
     baseState: {
-        //Starting State
+        activeStory:null, // String
+        cardsOnBoard:[], // image,id, storyTellerCard, playerRef, []
+        players: {}, // {playerRef: {name,points,cardsInHand,storyTeller, vote:cardId}},
+        winner: null
     },
     moveFunction: function (player, move, state) {
-        //State Change on Move
-        state[player.ref].x += 25;
+        console.log(state.activeStory)
+        switch (move.type) {
+           case 'vote':
+               // {type: 'vote', cardId:card.id}
+               console.log('1 ', checkIfStoryTeller(player.ref,state))
+               if(checkIfStoryTeller(player.ref,state) || !state.activeStory) return;
+               console.log('2', move)
+                    state.players[player.ref].vote = move.cardId;
+                    console.log(state.players)
+               if(!checkIfAllVoted(state)) return;
+                    console.log('3')
+                    countPoints(state);
+                    cleanVotesAndActiveStory(state);
+                    state.winner = checkForWinner(state,winningPoints);
+                    nextStoryTeller(state);
+               break
+            case 'story':
+                console.log(move)
+                // {type: 'story', story:story, cardId:card.id} 
+                if(!checkIfStoryTeller(player.ref,state)) return;
+                if(state.activeStory || !move.cardId) return;
+                    state.activeStory = move.story;
+                    moveCardFromHandToBoard(state,player.ref,move.cardId, true);   
+                    drawRandomCardFromDeck(state,player.ref);
+                break
+            case 'pickCard':
+                    // {type:'pickCard', cardId:card.id}
+                    if(checkIfPlayerPickedACard(state,player.ref)) return;
+                        moveCardFromHandToBoard(state,player.ref,move.cardId);
+                        drawRandomCardFromDeck(state,player.ref);
+                break;
+            
+        }
     },
-    maxPlayers: 2, // Number of Players you want in a single game
+    minPlayers:4,
+    maxPlayers: 4, // Number of Players you want in a single game
     timeFunction: function (state) {
-        state.test += 5;
-        //State Change on every frame
+
     },
     // startBlockerFunction: delayStartBlocker.startBlockerFunction(1000),
     // joinBlockerFunction: delayStartBlocker.joinBlockerFunction,
     statePresenter: function (state, playerRef) {
-
-        return state;
-    },
-    connectFunction: function (state, playerRef) {
-        state[playerRef] = {
-            x: 50,
-            y: 50
+        if(allPlayersPickedACard){
+            return {
+                cardsOnBoard: state.cardsOnBoard,
+                activeStory: state.activeStory,
+                myCards: state.players[playerRef].cardsInHand,
+                players: Object.values(state.players).map((player) =>{
+                    return {
+                        name: player.name,
+                        points: player.points,
+                        storyTeller: player.storyTeller,
+                    }
+                })
+            }
+        }
+        else{
+            return {
+                activeStory: state.activeStory,
+                myCards: state.players[playerRef].cardsInHand,
+                players: state.players.map((player) =>{
+                    return {
+                        name: player.name,
+                        points: player.points,
+                        storyTeller: player.storyTeller,
+                    }
+                })
+            }
         }
     },
+    connectFunction: function (state, playerRef) {
+        state.players[playerRef] = {
+            name: playerRef,
+            points: 0,
+            cardsInHand:[],
+            storyTeller: false
+        }
+        for(let i = 0; i<=6; i++){
+            drawRandomCardFromDeck(state,playerRef)
+        }
+        if(Object.keys(state.players).length === 4){
+            state.players[playerRef].storyTeller = true;
+        }
+        
+    },
     disconnectFunction: function (state, playerRef) {
-        state[playerRef] = undefined;
+        //state[playerRef] = undefined;
     }
 },
     io)
