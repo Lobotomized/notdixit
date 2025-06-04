@@ -73,6 +73,7 @@ newG({
                 activeStory: state.activeStory,
                 myCards: state.players[playerRef].cardsInHand,
                 me:state.players[playerRef],
+                stage: state.stage,
                 players: Object.values(state.players).map((player) =>{
                     return {
                         name: player.name,
@@ -87,6 +88,7 @@ newG({
                 activeStory: state.activeStory,
                 me:state.players[playerRef],
                 myCards: state.players[playerRef].cardsInHand,
+                stage: state.stage,
                 players: state.players.map((player) =>{
                     return {
                         name: player.name,
