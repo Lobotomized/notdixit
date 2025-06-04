@@ -61,6 +61,7 @@ newG({
                 cardsOnBoard: state.cardsOnBoard,
                 activeStory: state.activeStory,
                 myCards: state.players[playerRef].cardsInHand,
+                me:state.players[playerRef],
                 players: Object.values(state.players).map((player) =>{
                     return {
                         name: player.name,
@@ -73,6 +74,7 @@ newG({
         else{
             return {
                 activeStory: state.activeStory,
+                me:state.players[playerRef],
                 myCards: state.players[playerRef].cardsInHand,
                 players: state.players.map((player) =>{
                     return {
