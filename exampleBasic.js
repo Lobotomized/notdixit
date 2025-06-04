@@ -9,7 +9,7 @@ const delayStartBlocker = require('./blockers').delayStartBlocker
 const stages = {
     wait_for_story: "wait_for_story",
     wait_for_vote: "wait_for_vote",
-    show_story: "pick_card",
+    pick_card: "pick_card",
 }
 
 app.use('/static', express.static('public'))
