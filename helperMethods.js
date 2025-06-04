@@ -9,7 +9,7 @@ function checkIfStoryTeller(playerRef, state) {
 
 function checkIfAllVoted(state){
     const voters = Object.keys(state.players).filter(
-        playerId => !state.players[playerId].storyTeller || !state.players[playerId].vote
+        playerId => !state.players[playerId].storyTeller && !state.players[playerId].vote
     );
     return voters.length === 0;
 }
@@ -87,9 +87,10 @@ function checkIfPlayerPickedACard(state, playerRef){
 }
 
 function drawRandomCardFromDeck(state, playerRef){
+
     state.players[playerRef].cardsInHand.push(
         {
-            id: Math.random().toString(36).substring(2, 15),
+            id: "test", //Math.random().toString(36).substring(2, 15),
             image:"test",
             playerRef:playerRef
         }

@@ -17,24 +17,18 @@ newG({
         winner: null
     },
     moveFunction: function (player, move, state) {
-        console.log(state.activeStory)
         switch (move.type) {
            case 'vote':
                // {type: 'vote', cardId:card.id}
-               console.log('1 ', checkIfStoryTeller(player.ref,state))
                if(checkIfStoryTeller(player.ref,state) || !state.activeStory) return;
-               console.log('2', move)
                     state.players[player.ref].vote = move.cardId;
-                    console.log(state.players)
                if(!checkIfAllVoted(state)) return;
-                    console.log('3')
                     countPoints(state);
                     cleanVotesAndActiveStory(state);
                     state.winner = checkForWinner(state,winningPoints);
                     nextStoryTeller(state);
                break
             case 'story':
-                console.log(move)
                 // {type: 'story', story:story, cardId:card.id} 
                 if(!checkIfStoryTeller(player.ref,state)) return;
                 if(state.activeStory || !move.cardId) return;
