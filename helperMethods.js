@@ -87,11 +87,13 @@ function checkIfPlayerPickedACard(state, playerRef){
 }
 
 function drawRandomCardFromDeck(state, playerRef){
+    const randomIndex = Math.floor(Math.random() * state.remainingCards.length);
+    const cardNumber = state.remainingCards.splice(randomIndex, 1)[0];
 
     state.players[playerRef].cardsInHand.push(
         {
-            id: "test", //Math.random().toString(36).substring(2, 15),
-            image:"test",
+            id: Math.random().toString(36).substring(2, 15),
+            image:cardNumber+".jpg",
             playerRef:playerRef
         }
     ); 
