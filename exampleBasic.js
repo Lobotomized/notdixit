@@ -3,7 +3,10 @@ const { drawRandomCardFromDeck, checkIfAllVoted, checkIfStoryTeller, nextStoryTe
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-const newG = require('./globby').newIOServer;
+const cors = require('cors');
+app.use(cors());
+
+const newG = require('./globby').newIOServerV2;
 const delayStartBlocker = require('./blockers').delayStartBlocker
 
 const stages = {
@@ -14,7 +17,7 @@ const stages = {
 
 app.use('/static', express.static('public'))
 const winningPoints = 15;
-newG({
+newG({properties:{  
     baseState: {
         activeStory:null, // String
         cardsOnBoard:[], // image,id, storyTellerCard, playerRef, []
@@ -116,9 +119,13 @@ newG({
     },
     disconnectFunction: function (state, playerRef) {
         //state[playerRef] = undefined;
-    }
+    },
+    rooms:true,
+    delay: 500
 },
-    io)
+    io:io,
+    rooms:true,
+})
 
 
 app.get('/', function (req, res) {
@@ -126,6 +133,6 @@ app.get('/', function (req, res) {
 });
 
 
-http.listen(3000, function () {
-    console.log('listening on *:3000');
+http.listen(3001, function () {
+    console.log('listening on *:3001');
 });
