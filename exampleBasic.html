@@ -33,6 +33,13 @@
         })
     }
 
+    function startWithName(){
+        let name = document.getElementById('nameInput').value
+        socket.emit('hello', {
+            name:name
+        })
+    } // End Functio
+
 </script>
 
 
@@ -54,6 +61,9 @@
     <button onClick="vote()">Vote</button>
 
     <button onClick="pickCard()">PicCard</button>
+
+    <input id="nameInput" type="text">
+    <button onclick="startWithName">Start with name</button>
 </body>
 
 </html>

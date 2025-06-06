@@ -24,6 +24,9 @@ const io = require("socket.io")(http, {
 });
 const newG = require("./globby").newIOServer;
 const delayStartBlocker = require("./blockers").delayStartBlocker;
+const cors = require("cors");
+app.use(cors());
+
 const stages = {
   wait_for_story: "wait_for_story",
   wait_for_vote: "wait_for_vote",
@@ -33,8 +36,8 @@ const stages = {
 // Enable CORS for all routes and origins
 app.use("/static", express.static("public"));
 const winningPoints = 15;
-newG(
-  {
+newG({
+  properties: {
     baseState: {
       activeStory: null, // String
       cardsOnBoard: [], // image,id, storyTellerCard, playerRef, []
@@ -146,9 +149,12 @@ newG(
     disconnectFunction: function (state, playerRef) {
       //state[playerRef] = undefined;
     },
+    rooms: true,
+    delay: 500,
   },
-  io
-);
+  io: io,
+  rooms: true,
+});
 
 app.get("/", function (req, res) {
   return res.status(200).sendFile(__dirname + "/exampleBasic.html");
