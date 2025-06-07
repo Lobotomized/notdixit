@@ -34,8 +34,6 @@ const stages = {
   pick_card: "pick_card",
 };
 
-const maxPlayers = 3;
-
 app.use("/static", express.static("public"));
 const winningPoints = 15;
 newG({
@@ -82,9 +80,6 @@ newG({
           break;
       }
     },
-    minPlayers: 3,
-    maxPlayers: 3, // Number of Players you want in a single game
-    timeFunction: function (state) {},
     minPlayers: NUMBER_OF_PLAYERS,
     maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     timeFunction: function (state) {},
