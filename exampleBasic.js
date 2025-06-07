@@ -34,7 +34,8 @@ const stages = {
   pick_card: "pick_card",
 };
 
-// Enable CORS for all routes and origins
+const maxPlayers = 3;
+
 app.use("/static", express.static("public"));
 const winningPoints = 15;
 newG({
@@ -45,7 +46,7 @@ newG({
       players: {}, // {playerRef: {name,points,cardsInHand,storyTeller, vote:cardId}},
       winner: null,
       stage: stages.wait_for_story,
-      remainingCards: Array.from({ length: 850 }, (_, i) => i + 1), // number []
+      remainingCards: Array.from({ length: 860 }, (_, i) => i + 1), // number []
     },
     moveFunction: function (player, move, state) {
       switch (move.type) {
@@ -81,6 +82,9 @@ newG({
           break;
       }
     },
+    minPlayers: 3,
+    maxPlayers: 3, // Number of Players you want in a single game
+    timeFunction: function (state) {},
     minPlayers: NUMBER_OF_PLAYERS,
     maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     timeFunction: function (state) {},
