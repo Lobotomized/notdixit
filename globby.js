@@ -507,6 +507,7 @@ module.exports.newIOServerV2 = function newServer(config) {
   helperFunctionDelay();
 
   config.io.on("connection", function (socket) {
+
     let id;
     if (config.rooms) {
       socket.on("joinRoom", (data) => {

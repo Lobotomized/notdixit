@@ -80,12 +80,20 @@ newG({
           break;
       }
     },
-    minPlayers: NUMBER_OF_PLAYERS,
+    minPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     timeFunction: function (state) {},
-    // startBlockerFunction: delayStartBlocker.startBlockerFunction(1000),
+    //startBlockerFunction: delayStartBlocker.startBlockerFunction(1000),
     // joinBlockerFunction: delayStartBlocker.joinBlockerFunction,
+    
     statePresenter: function (state, playerRef) {
+      if(playerRef != 'player1' && playerRef != 'player2' && playerRef != 'player3'){
+        return {
+          cardsOnBoard:state.cardsOnBoard,
+          acriveStory:state.activeStory
+        }
+
+      }
       if (allPlayersPickedACard) {
         return {
           cardsOnBoard: state.cardsOnBoard,
@@ -107,7 +115,7 @@ newG({
           me: state.players[playerRef],
           myCards: state.players[playerRef].cardsInHand,
           stage: state.stage,
-          players: state.players.map((player) => {
+          players: Object.values(state.players).map((player) => {
             return {
               name: player.name,
               points: player.points,
@@ -117,17 +125,20 @@ newG({
         };
       }
     },
-    connectFunction: function (state, playerRef) {
-      state.players[playerRef] = {
-        name: playerRef,
-        points: 0,
-        cardsInHand: [],
-        storyTeller: false,
-      };
-      for (let i = 0; i <= 6; i++) {
-        drawRandomCardFromDeck(state, playerRef);
+    connectFunction: function (state, playerRef,gameData) {
+      if(Object.keys(state.players).length < NUMBER_OF_PLAYERS){
+        state.players[playerRef] = {
+          name: playerRef,
+          points: 0,
+          cardsInHand: [],
+          storyTeller: false,
+        };
+        for (let i = 0; i <= 6; i++) {
+          drawRandomCardFromDeck(state, playerRef);
+        }
       }
-      if (Object.keys(state.players).length === NUMBER_OF_PLAYERS) {
+
+      if (Object.keys(state.players).length === 1) {
         state.players[playerRef].storyTeller = true;
       }
     },
@@ -136,6 +147,7 @@ newG({
     },
     rooms: true,
     delay: 500,
+    hello:true
   },
   io: io,
   rooms: true,
