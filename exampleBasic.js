@@ -146,11 +146,11 @@ newG({
         };
       }
     },
-    connectFunction: function (state, playerRef,gameData) {
+    connectFunction: function (state, playerRef,gameData, playerId) {
       state.numberOfPlayers = gameData.numberOfPlayers;
       if(Object.keys(state.players).length < parseInt(state.numberOfPlayers)){
         state.players[playerRef] = {
-          name: playerRef,
+          name: playerId,
           points: 0,
           cardsInHand: [],
           storyTeller: false,

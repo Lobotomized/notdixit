@@ -331,7 +331,7 @@ const newGame = function (properties) {
       }
       state.playersConfigArray = this.players;
 
-      connectFunction(state, player.ref, this.roomData);
+      connectFunction(state, player.ref, this.roomData, playerId);
     };
 
     this.exit = (socketId) => {
