@@ -80,19 +80,39 @@ newG({
           break;
       }
     },
-    minPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
-    maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
+    // minPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
+    // maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     timeFunction: function (state) {},
-    //startBlockerFunction: delayStartBlocker.startBlockerFunction(1000),
-    // joinBlockerFunction: delayStartBlocker.joinBlockerFunction,
+    startBlockerFunction:     function (minPlayers, maxPlayers, currentPlayers, state) {
+        //Nqma custom minPlayers ot suzdatelq
+        if (state.started) {
+          return;
+        } else if (!state.started && currentPlayers.length == state.numberOfPlayers) {
+          state.started = true;
+        } else {
+          return {
+            message: "Not Enough Players To Start",
+            required: state.numberOfPlayers,
+            current: currentPlayers.length,
+          };
+        }
+    },
     
     statePresenter: function (state, playerRef) {
-      if(playerRef != 'player1' && playerRef != 'player2' && playerRef != 'player3'){
-        return {
-          cardsOnBoard:state.cardsOnBoard,
-          acriveStory:state.activeStory
+      // Check if player reference is valid (between player1 and state.numberOfPlayers)
+      let isValidPlayer = false;
+      for(let i = 1; i <= state.numberOfPlayers; i++) {
+        if(playerRef === `player${i}`) {
+          isValidPlayer = true;
+          break;
         }
+      }
 
+      if(!isValidPlayer) {
+        return {
+          cardsOnBoard: state.cardsOnBoard,
+          activeStory: state.activeStory
+        };
       }
       if (allPlayersPickedACard) {
         return {
@@ -126,7 +146,8 @@ newG({
       }
     },
     connectFunction: function (state, playerRef,gameData) {
-      if(Object.keys(state.players).length < NUMBER_OF_PLAYERS){
+      state.numberOfPlayers = gameData.numberOfPlayers;
+      if(Object.keys(state.players).length < state.numberOfPlayers){
         state.players[playerRef] = {
           name: playerRef,
           points: 0,

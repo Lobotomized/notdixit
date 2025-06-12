@@ -177,14 +177,13 @@ function drawRandomCardFromDeck(state, playerRef) {
 }
 
 function allPlayersPickedACard(state) {
-  return state.cardsOnBoard.length === NUMBER_OF_PLAYERS;
+  return state.cardsOnBoard.length === state.numberOfPlayers;
 }
 
 module.exports = {
   checkIfStoryTeller,
   checkIfAllVoted,
   countPoints,
-  NUMBER_OF_PLAYERS,
   cleanVotesAndActiveStory,
   checkForWinner,
   nextStoryTeller,
