@@ -75,6 +75,7 @@ newG({
           moveCardFromHandToBoard(state, player.ref, move.cardId);
           drawRandomCardFromDeck(state, player.ref);
           if (allPlayersPickedACard(state)) {
+            console.log('wtf?')
             state.stage = stages.wait_for_vote;
           }
           break;
@@ -87,7 +88,7 @@ newG({
         //Nqma custom minPlayers ot suzdatelq
         if (state.started) {
           return;
-        } else if (!state.started && currentPlayers.length == state.numberOfPlayers) {
+        } else if (!state.started && currentPlayers.length == parseInt(state.numberOfPlayers)) {
           state.started = true;
         } else {
           return {
@@ -101,7 +102,7 @@ newG({
     statePresenter: function (state, playerRef) {
       // Check if player reference is valid (between player1 and state.numberOfPlayers)
       let isValidPlayer = false;
-      for(let i = 1; i <= state.numberOfPlayers; i++) {
+      for(let i = 1; i <= parseInt(state.numberOfPlayers); i++) {
         if(playerRef === `player${i}`) {
           isValidPlayer = true;
           break;
@@ -147,7 +148,7 @@ newG({
     },
     connectFunction: function (state, playerRef,gameData) {
       state.numberOfPlayers = gameData.numberOfPlayers;
-      if(Object.keys(state.players).length < state.numberOfPlayers){
+      if(Object.keys(state.players).length < parseInt(state.numberOfPlayers)){
         state.players[playerRef] = {
           name: playerRef,
           points: 0,
