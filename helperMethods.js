@@ -178,7 +178,9 @@ function drawRandomCardFromDeck(state, playerRef) {
 }
 
 function allPlayersPickedACard(state) {
-  return parseInt(state.cardsOnBoard.length) === parseInt(state.numberOfPlayers);
+  return (
+    parseInt(state.cardsOnBoard.length) === parseInt(state.numberOfPlayers)
+  );
 }
 
 module.exports = {

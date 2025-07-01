@@ -84,35 +84,43 @@ newG({
     // minPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     // maxPlayers: NUMBER_OF_PLAYERS, // Number of Players you want in a single game
     timeFunction: function (state) {},
-    startBlockerFunction:     function (minPlayers, maxPlayers, currentPlayers, state) {
-        //Nqma custom minPlayers ot suzdatelq
-        if (state.started) {
-          return;
-        } else if (!state.started && currentPlayers.length == parseInt(state.numberOfPlayers)) {
-          state.started = true;
-        } else {
-          return {
-            message: "Not Enough Players To Start",
-            required: state.numberOfPlayers,
-            current: currentPlayers.length,
-          };
-        }
+    startBlockerFunction: function (
+      minPlayers,
+      maxPlayers,
+      currentPlayers,
+      state
+    ) {
+      //Nqma custom minPlayers ot suzdatelq
+      if (state.started) {
+        return;
+      } else if (
+        !state.started &&
+        currentPlayers.length == parseInt(state.numberOfPlayers)
+      ) {
+        state.started = true;
+      } else {
+        return {
+          message: "Not Enough Players To Start",
+          required: state.numberOfPlayers,
+          current: currentPlayers.length,
+        };
+      }
     },
-    
+
     statePresenter: function (state, playerRef) {
       // Check if player reference is valid (between player1 and state.numberOfPlayers)
       let isValidPlayer = false;
-      for(let i = 1; i <= parseInt(state.numberOfPlayers); i++) {
-        if(playerRef === `player${i}`) {
+      for (let i = 1; i <= parseInt(state.numberOfPlayers); i++) {
+        if (playerRef === `player${i}`) {
           isValidPlayer = true;
           break;
         }
       }
 
-      if(!isValidPlayer) {
+      if (!isValidPlayer) {
         return {
           cardsOnBoard: state.cardsOnBoard,
-          activeStory: state.activeStory
+          activeStory: state.activeStory,
         };
       }
       if (allPlayersPickedACard(state)) {
@@ -149,9 +157,9 @@ newG({
         };
       }
     },
-    connectFunction: function (state, playerRef,gameData, playerId) {
+    connectFunction: function (state, playerRef, gameData, playerId) {
       state.numberOfPlayers = gameData.numberOfPlayers;
-      if(Object.keys(state.players).length < parseInt(state.numberOfPlayers)){
+      if (Object.keys(state.players).length < parseInt(state.numberOfPlayers)) {
         state.players[playerRef] = {
           name: playerId,
           points: 0,
@@ -172,7 +180,7 @@ newG({
     },
     rooms: true,
     delay: 500,
-    hello:true
+    hello: true,
   },
   io: io,
   rooms: true,
