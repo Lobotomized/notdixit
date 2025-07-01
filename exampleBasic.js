@@ -39,6 +39,7 @@ const winningPoints = 15;
 newG({
   properties: {
     baseState: {
+      storyTellerTurn:0,
       activeStory: null, // String
       cardsOnBoard: [], // image,id, storyTellerCard, playerRef, []
       players: {}, // {playerRef: {name,points,cardsInHand,storyTeller, vote:cardId}},
@@ -75,7 +76,6 @@ newG({
           moveCardFromHandToBoard(state, player.ref, move.cardId);
           drawRandomCardFromDeck(state, player.ref);
           if (allPlayersPickedACard(state)) {
-            console.log('wtf?')
             state.stage = stages.wait_for_vote;
           }
           break;
@@ -115,7 +115,7 @@ newG({
           activeStory: state.activeStory
         };
       }
-      if (allPlayersPickedACard) {
+      if (allPlayersPickedACard(state)) {
         return {
           cardsOnBoard: state.cardsOnBoard,
           activeStory: state.activeStory,
@@ -133,6 +133,9 @@ newG({
       } else {
         return {
           activeStory: state.activeStory,
+          cardIPlayed: state.cardsOnBoard.find((card) => {
+            return card.playerRef === playerRef
+          }),
           me: state.players[playerRef],
           myCards: state.players[playerRef].cardsInHand,
           stage: state.stage,

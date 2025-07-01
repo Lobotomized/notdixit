@@ -137,12 +137,13 @@ function checkForWinner(state, winningPoints) {
 
 function nextStoryTeller(state) {
   const players = Object.keys(state.players);
-  const storyTellerIndex = players.findIndex(
-    (playerId) => state.players[playerId].storyTeller
-  );
-  state.players[players[storyTellerIndex]].storyTeller = false;
+  state.players[players[state.storyTellerTurn]].storyTeller = false;
+  state.storyTellerTurn++;
+  if( state.storyTellerTurn > players.length-1){
+     state.storyTellerTurn = 0;
+  }
   state.players[
-    players[(storyTellerIndex + 1) % players.length]
+    players[state.storyTellerTurn]
   ].storyTeller = true;
 }
 
