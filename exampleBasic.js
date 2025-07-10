@@ -49,6 +49,9 @@ newG({
     },
     moveFunction: function (player, move, state) {
       switch (move.type) {
+        case "naming":
+          state.players[player.ref].name = move.name; 
+          break;
         case "vote":
           // {type: 'vote', cardId:card.id}
           if (checkIfStoryTeller(player.ref, state) || !state.activeStory)
@@ -176,7 +179,7 @@ newG({
       }
     },
     disconnectFunction: function (state, playerRef) {
-      //state[playerRef] = undefined;
+      state[playerRef] = undefined;
     },
     rooms: true,
     delay: 500,

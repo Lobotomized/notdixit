@@ -316,6 +316,7 @@ const newGame = function (properties) {
       };
       if (playerId) {
         player.hello = playerId;
+        console.log(this.disconnected)
         const existing = this.disconnected.find((pl) => {
           return pl.hello == player.hello;
         });
