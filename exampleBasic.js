@@ -50,7 +50,7 @@ newG({
     moveFunction: function (player, move, state) {
       switch (move.type) {
         case "naming":
-          state.players[player.ref].name = move.name; 
+          if(state.players[player.ref]) state.players[player.ref].name = move.name; 
           break;
         case "vote":
           // {type: 'vote', cardId:card.id}
@@ -162,6 +162,7 @@ newG({
     },
     connectFunction: function (state, playerRef, gameData, playerId) {
       state.numberOfPlayers = gameData.numberOfPlayers;
+      console.log(playerRef)  
       if (Object.keys(state.players).length < parseInt(state.numberOfPlayers)) {
         state.players[playerRef] = {
           name: playerId,
