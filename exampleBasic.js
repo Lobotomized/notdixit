@@ -36,7 +36,7 @@ const stages = {
 
 app.use("/static", express.static("public"));
 const winningPoints = 15;
-newG({
+const lobby = newG({
   properties: {
     baseState: {
       storyTellerTurn:0,
@@ -199,6 +199,12 @@ newG({
 app.get("/", function (req, res) {
   return res.status(200).sendFile(__dirname + "/exampleBasic.html");
 });
+app.get("/games", function(req,res) {
+  console.log(lobby)
+  return res.json({
+    rooms:lobby.games
+  })
+})
 
 http.listen(3232, function () {
   console.log("listening on *:3232");
