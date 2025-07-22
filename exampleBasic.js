@@ -46,9 +46,13 @@ newG({
       winner: null,
       stage: stages.wait_for_story,
       remainingCards: Array.from({ length: 860 }, (_, i) => i + 1), // number []
+      messages:[] // {name:player.name, message:message}
     },
     moveFunction: function (player, move, state) {
       switch (move.type) {
+        case "message":
+            state.messages.push({name:state.players[player.ref].name, message:move.message});
+          break;
         case "naming":
           if(state.players[player.ref]) state.players[player.ref].name = move.name; 
           break;
@@ -133,6 +137,7 @@ newG({
           myCards: state.players[playerRef].cardsInHand,
           me: state.players[playerRef],
           stage: state.stage,
+          messages:state.messages,
           players: Object.values(state.players).map((player) => {
             return {
               name: player.name,
@@ -150,6 +155,7 @@ newG({
           me: state.players[playerRef],
           myCards: state.players[playerRef].cardsInHand,
           stage: state.stage,
+          messages:state.messages,
           players: Object.values(state.players).map((player) => {
             return {
               name: player.name,
