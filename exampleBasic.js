@@ -45,7 +45,7 @@ const lobby = newG({
       players: {}, // {playerRef: {name,points,cardsInHand,storyTeller, vote:cardId}},
       winner: null,
       stage: stages.wait_for_story,
-      remainingCards: Array.from({ length: 860 }, (_, i) => i + 1), // number []
+      remainingCards: Array.from({ length: 266 }, (_, i) => i + 1), // number []
       messages:[] // {name:player.name, message:message}
     },
     moveFunction: function (player, move, state) {
@@ -168,10 +168,9 @@ const lobby = newG({
     },
     connectFunction: function (state, playerRef, gameData, playerId) {
       state.numberOfPlayers = gameData.numberOfPlayers;
-      console.log(playerRef)  
       if (Object.keys(state.players).length < parseInt(state.numberOfPlayers)) {
         state.players[playerRef] = {
-          name: playerId,
+          name: gameData.name ? gameData.name : playerId,
           points: 0,
           cardsInHand: [],
           storyTeller: false,
@@ -200,7 +199,6 @@ app.get("/", function (req, res) {
   return res.status(200).sendFile(__dirname + "/exampleBasic.html");
 });
 app.get("/games", function(req,res) {
-  console.log(lobby)
   return res.json({
     rooms:lobby.games
   })
