@@ -49,6 +49,7 @@ const lobby = newG({
       messages:[] // {name:player.name, message:message}
     },
     moveFunction: function (player, move, state) {
+      console.log(player, move)
       switch (move.type) {
         case "message":
             state.messages.push({name:state.players[player.ref].name, message:move.message});
@@ -183,8 +184,10 @@ const lobby = newG({
       if (Object.keys(state.players).length === 1) {
         state.players[playerRef].storyTeller = true;
       }
+       console.log('connect ' , state[playerRef] )
     },
     disconnectFunction: function (state, playerRef) {
+      console.log('disconnect ' , state[playerRef] )
       state[playerRef] = undefined;
     },
     rooms: true,
