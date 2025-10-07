@@ -35,7 +35,7 @@ const newGame = function (properties) {
           state.started = true;
         } else {
           return {
-            message: "Not Enough Players To Start",
+            message: "Няма достатъчно играчи, за да започне",
             required: minPlayers,
             current: currentPlayers.length,
           }; // Return object while you want users to join the same room
@@ -43,7 +43,7 @@ const newGame = function (properties) {
       } else {
         if (currentPlayers.length < minPlayers && !state.started) {
           return {
-            message: "Not Enough Players To Start",
+            message: "Няма достатъчно играчи, за да започне",
             required: minPlayers,
             current: currentPlayers.length,
           }; // Return object while you want users to join the same room

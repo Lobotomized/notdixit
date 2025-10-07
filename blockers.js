@@ -7,7 +7,7 @@ function delayStartBlocker(delay) {
 
         if (minPlayers > currentPlayers.length) {
             state.delayCounter = delay;
-            return { message: "Not Enough Players to Start", minPlayers: minPlayers, currentPlayers: currentPlayers.length }
+            return { message: "Няма достатъчно играчи, за да започне", minPlayers: minPlayers, currentPlayers: currentPlayers.length }
         }
 
         if (currentPlayers.length >= maxPlayers) {
