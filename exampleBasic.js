@@ -207,6 +207,6 @@ app.get("/games", function(req,res) {
   })
 })
 
-http.listen(3232, function () {
-  console.log("listening on *:3232");
+http.listen(8080, function () {
+  console.log("listening on *:8080");
 });
