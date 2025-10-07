@@ -108,7 +108,7 @@ const lobby = newG({
         state.started = true;
       } else {
         return {
-          message: "Not Enough Players To Start",
+          message: "Няма достатъчно играчи, за да започне",
           required: state.numberOfPlayers,
           current: currentPlayers.length,
         };
